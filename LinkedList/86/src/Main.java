@@ -10,31 +10,41 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        ListNode head = createList(Arrays.asList(new Integer[]{1, 1, 2, 3, 3}));
+        ListNode head = createList(Arrays.asList(new Integer[]{1, 4, 3, 2, 5, 2}));
         traverse(head);
-        ListNode newHead = deleteDuplicates(head);
+        ListNode newHead = partition(head, 3);
         traverse(newHead);
     }
 
-    public static ListNode deleteDuplicates(ListNode head) {
+    public static ListNode partition(ListNode head, int x) {
         if(head == null) {
             return null;
         }
-        ListNode dummy = new ListNode(-1);
-        dummy.next = head;
-        head = dummy;
-
-        while(head.next != null && head.next.next != null) {
-            if(head.next.val == head.next.next.val) {
-                int val = head.next.val;
-                while(head.next != null && head.next.val == val) {
-                    head.next = head.next.next;
-                }
+        ListNode dummyHead = new ListNode(Integer.MIN_VALUE);
+        dummyHead.next = head;
+        ListNode prev = dummyHead;
+        ListNode crt = dummyHead;
+        while(crt != null && crt.val < x) {
+            prev = crt;
+            crt = crt.next;
+        }
+        ListNode next = crt;
+        ListNode tempTail = crt;
+        while(next != null) {
+            if(next.val >= x) {
+                tempTail = next;
+                next = next.next;
             } else {
-                head = head.next;
+                ListNode temp1 = prev.next;
+                ListNode temp2 = next.next;
+                prev.next = next;
+                next.next = temp1;
+                tempTail.next = temp2;
+                prev = next;
+                next = temp2;
             }
         }
-        return dummy.next;
+        return dummyHead.next;
     }
 
     public static void traverse(ListNode head) {
