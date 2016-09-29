@@ -4,7 +4,7 @@ public class Main {
         System.out.println("Hello World!");
     }
 
-    public static int longestConsecutive(int[] nums) {
-
+    public static int minDistance(String word1, String word2) {
+        
     }
 }
