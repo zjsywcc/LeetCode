@@ -63,4 +63,19 @@ public class Main {
             }
         }
     }
+
+    public static int leftBound(int s, int[] nums) {
+        int left = 0, right = nums.length;
+        while(left + 1 < right) {
+            int mid = left + (right - left) / 2;
+            if(nums[mid] == s) {
+                right = mid;
+            } else if(nums[mid] < s) {
+                left = mid;
+            } else {
+                right = mid;
+            }
+        }
+        return left;
+    }
 }
