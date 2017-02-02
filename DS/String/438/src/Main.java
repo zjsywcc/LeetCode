@@ -18,37 +18,35 @@ public class Main {
         if(s == null || p == null || p.length() > s.length()) {
             return rst;
         }
-        int len = s.length();
-        int pLen = p.length();
-        List<Character> list = new ArrayList<Character>();
-        List<Character> compareList = new ArrayList<Character>();
-        char[] chars = s.toCharArray();
-        int crt1 = 0;
-        int crt2 = pLen - 1;
-        for(int i = 0; i <= crt2; i++) {
-            char c = s.charAt(i);
-            list.add(c);
-        }
-        Collections.sort(list);
+        int[] pIndex = new int[26];
         for(char c : p.toCharArray()) {
-              
-                compareList.add(c);
-
+            pIndex[c - 'a']++;
         }
-        while(crt2 < len) {
-            if(list.size() == pLen) {
-                rst.add(crt1);
+        int pLen =  p.length();
+        int tempLen = pLen;
+        int sLen = s.length();
+        int delete = -1;
+        int add = pLen - 1;
+        for(int i = 0; i < tempLen; i++) {
+            if(pIndex[s.toCharArray()[i] - 'a']-- > 0) {
+                pLen--;
             }
-            char c = s.toCharArray()[crt1];
-            int index = list.indexOf(c);
-            list.remove(index);
-            crt1++;
-            crt2++;
-            if(crt2 >= len) {
-                break;
-            }
-            if(compareList.contains(chars[crt2])) {
-                list.add(chars[crt2]);
+        }
+        for(; add < sLen; add++, delete++) {
+            if(delete != -1) {
+                if(pIndex[s.toCharArray()[add] - 'a']-- > 0) {
+                    pLen--;
+                }
+                if(pIndex[s.toCharArray()[delete] - 'a']++ >= 0) {
+                    pLen++;
+                }
+                if(pLen == 0) {
+                    rst.add(delete + 1);
+                }
+            } else {
+                if(pLen == 0) {
+                    rst.add(delete + 1);
+                }
             }
         }
         return rst;
@@ -58,6 +56,7 @@ public class Main {
         for(int i : rst) {
             System.out.print(i + " ");
         }
+        System.out.println();
     }
 
     public static void printSet(Set<Integer> set) {
